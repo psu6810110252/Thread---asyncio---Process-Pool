@@ -4,9 +4,7 @@ import time
 import random
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 
-# ==========================================
 # ส่วนที่ 1: Asyncio - งาน I/O (ดึงข้อมูลผ่าน Network)
-# ==========================================
 async def fetch_etf_data(ticker):
     print(f"[Asyncio] 📡 กำลังดึงข้อมูลราคา {ticker} จาก API...")
     await asyncio.sleep(1.5)  # จำลองการรอเซิร์ฟเวอร์ตอบกลับ (Network Latency)
@@ -23,9 +21,7 @@ async def main_async_fetch(tickers):
     results = await asyncio.gather(*tasks)
     return dict(results)
 
-# ==========================================
 # ส่วนที่ 2: Thread Pool - งาน I/O (บันทึกลงฮาร์ดดิสก์)
-# ==========================================
 def save_to_csv(item):
     ticker, prices = item
     print(f"[Thread] 💾 กำลังบันทึกข้อมูล {ticker} ลงไฟล์ {ticker}_history.csv... (Thread: {threading.current_thread().name})")
@@ -38,9 +34,7 @@ def run_threading_save(data_dict):
     with ThreadPoolExecutor(max_workers=3) as executor:
         executor.map(save_to_csv, data_dict.items())
 
-# ==========================================
 # ส่วนที่ 3: Process Pool - งาน CPU (คำนวณสถิติ/คณิตศาสตร์)
-# ==========================================
 def calculate_volatility(ticker):
     print(f"[Process] ⚙️ กำลังคำนวณความผันผวน (Volatility) ของ {ticker}...")
     
@@ -59,9 +53,7 @@ def run_process_pool_compute(tickers):
         results = list(executor.map(calculate_volatility, tickers))
     return results
 
-# ==========================================
 # Main Execution
-# ==========================================
 if __name__ == "__main__":
     etf_list = ["VOO", "QQQ", "VTI"] # รายชื่อกองทุนที่ต้องการวิเคราะห์
     
